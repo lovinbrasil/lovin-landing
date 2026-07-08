@@ -23,7 +23,10 @@ export async function getCurrentAdmin(): Promise<AdminSession> {
 
   if (error || !isAdmin) {
     await supabase.auth.signOut();
-    redirect("/admin/login?error=not_admin");
+    const accessError = encodeURIComponent(
+      "Sua conta não tem autorização para acessar o painel.",
+    );
+    redirect(`/admin/login?error=${accessError}`);
   }
 
   return { user };

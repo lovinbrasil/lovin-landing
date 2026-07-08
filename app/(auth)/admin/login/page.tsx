@@ -12,9 +12,19 @@ type LoginPageProps = {
 
 export const dynamic = "force-dynamic";
 
+function getLoginErrorMessage(error?: string) {
+  if (!error) return null;
+
+  try {
+    return decodeURIComponent(error);
+  } catch {
+    return "Não foi possível concluir o acesso. Tente novamente.";
+  }
+}
+
 export default async function AdminLoginPage({ searchParams }: LoginPageProps) {
   const params = await searchParams;
-  const error = params?.error;
+  const error = getLoginErrorMessage(params?.error);
   const next = params?.next ?? "/admin";
 
   return (
@@ -42,13 +52,10 @@ export default async function AdminLoginPage({ searchParams }: LoginPageProps) {
         <div className="admin-login-copy">
           <p className="section-kicker">Acesso restrito</p>
           <h1>Entre para gerenciar o Lovin Brasil.</h1>
-          <p>
-            Use uma conta Supabase com <code>raw_app_meta_data.role</code> como
-            <code> admin</code> ou <code> moderator</code>.
-          </p>
+          <p>Use seu e-mail e senha cadastrados para acessar o painel.</p>
         </div>
 
-        {error ? <div className="form-error">{decodeURIComponent(error)}</div> : null}
+        {error ? <div className="form-error">{error}</div> : null}
 
         <form action={signInAction} className="admin-form">
           <input type="hidden" name="next" value={next} />
@@ -72,7 +79,7 @@ export default async function AdminLoginPage({ searchParams }: LoginPageProps) {
             </div>
           </label>
           <button className="admin-primary-button" type="submit">
-            Entrar no admin
+            Entrar no painel
           </button>
         </form>
       </div>

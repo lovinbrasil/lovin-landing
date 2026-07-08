@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import type { LucideIcon } from "lucide-react";
 import {
   ArrowRight,
@@ -309,6 +310,7 @@ export default function Home() {
           <a href="#proposta">Proposta</a>
           <a href="#como-funciona">Como funciona</a>
           <a href="#premium">Premium</a>
+          <Link href="/politica-de-privacidade">Política de Privacidade</Link>
         </div>
       </footer>
     </main>

@@ -34,7 +34,7 @@ export async function signInAction(formData: FormData) {
   const { error } = await supabase.auth.signInWithPassword({ email, password });
 
   if (error) {
-    redirectWithError("/admin/login", "Credenciais inválidas ou conta sem acesso.");
+    redirectWithError("/admin/login", "E-mail ou senha inválidos, ou conta sem acesso.");
   }
 
   const {
@@ -42,7 +42,7 @@ export async function signInAction(formData: FormData) {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    redirectWithError("/admin/login", "Não foi possível validar a sessão.");
+    redirectWithError("/admin/login", "Não foi possível confirmar seu acesso. Tente novamente.");
   }
 
   const { data: isAdmin } = await supabase.rpc("is_lovin_admin", {
@@ -51,7 +51,7 @@ export async function signInAction(formData: FormData) {
 
   if (!isAdmin) {
     await supabase.auth.signOut();
-    redirectWithError("/admin/login", "Seu usuário não tem permissão de admin.");
+    redirectWithError("/admin/login", "Sua conta não tem autorização para acessar o painel.");
   }
 
   redirect(next.startsWith("/admin") ? next : "/admin");
